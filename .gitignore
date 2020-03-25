@@ -1,0 +1,10 @@
+# Editor
+.idea
+.vscode
+*.iml
+*.iws
+*.ipr
+out
+
+build
+.gradle
