@@ -10,11 +10,16 @@ version = "1.0-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
+    jcenter()
     mavenCentral()
 }
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.10.+")
+    implementation("com.github.kittinunf.fuel:fuel:2.2.1")
+//    implementation("com.github.kittinunf.fuel:fuel-jackson:2.2.1")
 }
 
 application {

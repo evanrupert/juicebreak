@@ -1,5 +1,9 @@
 package io.juicebreak
 
+import io.juicebreak.slack.SlackApp
+
 fun main() {
-    println("Hello, World!")
+    val app = SlackApp()
+    val resp = app.postMessage("test", "Heck ye")
+    println(resp)
 }
