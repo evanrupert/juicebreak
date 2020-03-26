@@ -1,12 +1,17 @@
 package io.juicebreak.slack
 
-import com.fasterxml.jackson.databind.JsonMappingException
 import io.juicebreak.HTTP
 import io.juicebreak.JSON
 
+class SlackException(message: String)
+    : Exception("Slack method error: '$message'")
+
 object SlackHTTP {
-    data class ErrorResponse (
-        val ok: Boolean,
+    data class SlackResponse(
+        val ok: Boolean
+    )
+
+    data class ErrorResponse(
         val error: String
     )
 
@@ -18,18 +23,15 @@ object SlackHTTP {
     inline fun <reified T : Any > call(method: String, body: Any): T {
         val resp = HTTP.post("${baseUrl}/${method}", apiKey, body)
 
-        try {
+        if (isOk(resp)) {
             return JSON.read(resp)
-        } catch (e: JsonMappingException) {
-            try {
-                val errResp = JSON.read<ErrorResponse>(resp)
-                if (errResp.ok)
-                    throw e
-                else
-                    throw Exception("Slack method error: '${errResp.error}'")
-            } catch (e2: JsonMappingException) {
-                throw e2
-            }
+        } else {
+            val (error) = JSON.read<ErrorResponse>(resp)
+            throw SlackException(error)
         }
+    }
+
+    fun isOk(resp: String): Boolean {
+        return JSON.read<SlackResponse>(resp).ok
     }
 }
