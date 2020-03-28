@@ -20,6 +20,10 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.10.+")
     implementation("com.github.kittinunf.fuel:fuel:2.2.1")
 //    implementation("com.github.kittinunf.fuel:fuel-jackson:2.2.1")
+
+    implementation("io.ktor:ktor-server-netty:1.3.2")
+    implementation("ch.qos.logback:logback-classic:1.2.3")
+    implementation("io.ktor:ktor-jackson:1.3.2")
 }
 
 application {
