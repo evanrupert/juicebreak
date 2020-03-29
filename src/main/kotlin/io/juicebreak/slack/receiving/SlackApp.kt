@@ -5,6 +5,7 @@ import io.juicebreak.slack.JSON
 import io.ktor.application.ApplicationCall
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.parseUrlEncodedParameters
 import io.ktor.request.receiveText
 import io.ktor.response.respond
 import io.ktor.response.respondText
@@ -15,16 +16,23 @@ import io.ktor.server.netty.Netty
 
 class SlackApp {
     private val eventListeners: MutableMap<Event, suspend (data: JsonNode) -> Unit> = mutableMapOf()
+    private val commandListeners: MutableMap<String, suspend (text: String, channel: String) -> Unit> = mutableMapOf()
 
     fun on(event: Event, callback: suspend (data: JsonNode) -> Unit) {
         println("Registering event listener for: ${event.type}")
         eventListeners[event] = callback
     }
 
+    fun on(command: String, callback: suspend (text: String, channel: String) -> Unit) {
+        println("Registering command listener for: $command")
+        commandListeners[command] = callback
+    }
+
     fun start() {
         embeddedServer(Netty, 8080) {
             routing {
                 post("/") { handleEvent(call) }
+                post("/commands") { handleCommand(call) }
             }
         }.start(wait = true)
     }
@@ -36,12 +44,26 @@ class SlackApp {
             challengeAccepted(call, json)
             return
         }
-        println(json)
 
         val event = parseEventType(json)
 
-        println("Received dispatch of type: '${event.type}'")
-        eventListeners[event]?.invoke(json)
+        if (!isBot(json)) {
+            println("Received dispatch of type: '${event.type}'")
+            println(json)
+            eventListeners[event]?.invoke(json["event"])
+        }
+
+        call.respond(HttpStatusCode.OK)
+    }
+
+    private suspend fun handleCommand(call: ApplicationCall) {
+        val params = call.receiveText().parseUrlEncodedParameters()
+
+        val commandType = params["command"]!!
+        val text = params["text"]!!
+        val channel = params["channel_id"]!!
+
+        commandListeners[commandType]?.invoke(text, channel)
 
         call.respond(HttpStatusCode.OK)
     }
@@ -56,4 +78,6 @@ class SlackApp {
 
     private fun parseEventType(json: JsonNode): Event =
         Event.from(json["event"]["type"].asText())
+
+    private fun isBot(json: JsonNode): Boolean = json["event"].has("bot_id")
 }
