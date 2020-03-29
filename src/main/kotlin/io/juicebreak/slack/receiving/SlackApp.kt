@@ -1,5 +1,6 @@
 package io.juicebreak.slack.receiving
 
+import com.fasterxml.jackson.databind.JsonNode
 import io.juicebreak.slack.JSON
 import io.ktor.application.ApplicationCall
 import io.ktor.application.call
@@ -13,10 +14,10 @@ import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 
 class SlackApp {
-    private val eventListeners: MutableMap<Event, suspend (args: InvocationArgs) -> Unit> = mutableMapOf()
+    private val eventListeners: MutableMap<Event, suspend (data: JsonNode) -> Unit> = mutableMapOf()
 
-    fun on(event: Event, callback: suspend (args: InvocationArgs) -> Unit) {
-        println("Registering event listener for: ${event.code}")
+    fun on(event: Event, callback: suspend (data: JsonNode) -> Unit) {
+        println("Registering event listener for: ${event.type}")
         eventListeners[event] = callback
     }
 
@@ -29,34 +30,30 @@ class SlackApp {
     }
 
     private suspend fun handleEvent(call: ApplicationCall) {
-        val rawBody = call.receiveText()
+        val json = JSON.readDynamic(call.receiveText())
 
-        if (isChallenge(rawBody)) {
-            challengeAccepted(call, rawBody)
+        if (isChallenge(json)) {
+            challengeAccepted(call, json)
             return
         }
+        println(json)
 
-        val eventType = parseEventType(rawBody)
+        val event = parseEventType(json)
 
-        println("Received event of type: '$eventType'")
-        eventListeners[Event.from(eventType)]?.invoke(buildInvocationData(rawBody))
+        println("Received dispatch of type: '${event.type}'")
+        eventListeners[event]?.invoke(json)
 
         call.respond(HttpStatusCode.OK)
     }
 
-    private fun buildInvocationData(rawBody: String): InvocationArgs =
-        InvocationArgs(JSON.read(rawBody), rawBody)
+    private fun isChallenge(json: JsonNode): Boolean =
+        json["type"].asText() == "url_verification"
 
-    private fun isChallenge(rawBody: String): Boolean =
-        JSON.readDynamic(rawBody)["type"].asText() == "challenge"
-
-    private suspend fun challengeAccepted(call: ApplicationCall, body: String) {
-        val challenge = JSON.readDynamic(body)["challenge"].asText()
+    private suspend fun challengeAccepted(call: ApplicationCall, json: JsonNode) {
+        val challenge = json["challenge"].asText()
         call.respondText(challenge)
     }
 
-    private fun parseEventType(body: String): String {
-        val json = JSON.readDynamic(body)
-        return json["event"]["type"].asText()
-    }
+    private fun parseEventType(json: JsonNode): Event =
+        Event.from(json["event"]["type"].asText())
 }
