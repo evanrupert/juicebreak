@@ -1,4 +1,4 @@
-package io.juicebreak
+package io.juicebreak.slack
 
 import com.github.kittinunf.fuel.core.Headers
 import com.github.kittinunf.fuel.httpGet

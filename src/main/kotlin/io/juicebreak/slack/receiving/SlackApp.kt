@@ -1,6 +1,6 @@
-package io.juicebreak.slack
+package io.juicebreak.slack.receiving
 
-import io.juicebreak.JSON
+import io.juicebreak.slack.JSON
 import io.ktor.application.ApplicationCall
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
@@ -13,9 +13,9 @@ import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 
 class SlackApp {
-    private val eventListeners: MutableMap<Event, (args: InvocationArgs) -> Unit> = mutableMapOf()
+    private val eventListeners: MutableMap<Event, suspend (args: InvocationArgs) -> Unit> = mutableMapOf()
 
-    fun on(event: Event, callback: (args: InvocationArgs) -> Unit) {
+    fun on(event: Event, callback: suspend (args: InvocationArgs) -> Unit) {
         println("Registering event listener for: ${event.code}")
         eventListeners[event] = callback
     }
@@ -45,15 +45,18 @@ class SlackApp {
     }
 
     private fun buildInvocationData(rawBody: String): InvocationArgs =
-        JSON.read<EventDispatch>(rawBody) to rawBody
+        InvocationArgs(JSON.read(rawBody), rawBody)
+
+    private fun isChallenge(rawBody: String): Boolean =
+        JSON.readDynamic(rawBody)["type"].asText() == "challenge"
 
     private suspend fun challengeAccepted(call: ApplicationCall, body: String) {
-        val challenge = JSON.read<Challenge>(body)
-        call.respondText(challenge.challenge)
+        val challenge = JSON.readDynamic(body)["challenge"].asText()
+        call.respondText(challenge)
     }
 
     private fun parseEventType(body: String): String {
-        val parsed: EventResponse = JSON.read(body)
-        return parsed.event.type
+        val json = JSON.readDynamic(body)
+        return json["event"]["type"].asText()
     }
 }

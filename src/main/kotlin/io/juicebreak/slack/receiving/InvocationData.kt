@@ -1,17 +1,12 @@
-package io.juicebreak.slack
+package io.juicebreak.slack.receiving
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.JsonNode
 
-data class EventResponse(
-    val event: TypedResponse
+data class InvocationArgs(
+    val dispatch: EventDispatch,
+    val rawBody: String
 )
-
-data class TypedResponse(
-    val type: String
-)
-
-typealias InvocationArgs = Pair<EventDispatch, String>
 
 data class EventDispatch(
     val token: String,

@@ -1,4 +1,4 @@
-package io.juicebreak.slack
+package io.juicebreak.slack.receiving
 
 enum class Event(val code: String) {
     REACTION_ADDED("reaction_added"),
