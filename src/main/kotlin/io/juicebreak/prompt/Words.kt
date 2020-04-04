@@ -14,6 +14,9 @@ fun randomFighter(): String =
 fun randomPower(): String =
     powers[Random.nextInt(0, powers.size)]
 
+fun randomBuzzword(): String =
+    buzzwords[Random.nextInt(0, buzzwords.size)]
+
 val nouns: List<String> = listOf(
     "squirrel",
     "bunny",
@@ -274,4 +277,58 @@ val powers: List<String> = listOf(
     "who spits acid",
     "in a mech suit",
     "armed with technology from the year 2400"
+)
+
+val buzzwords: List<String> = listOf(
+    "Orange",
+    "Apple",
+    "Banana",
+    "Squash",
+    "Cookie",
+    "Muffin",
+    "Toast",
+    "Bagel",
+    "Sandwich",
+    "Peanut Butter",
+    "Jelly",
+    "Waffle",
+    "Pancake",
+    "Chair",
+    "Couch",
+    "Television",
+    "Night Stand",
+    "Table",
+    "Lamp",
+    "Laptop",
+    "Computer",
+    "Keyboard",
+    "Mouse",
+    "Monitor",
+    "Cup",
+    "Pencil",
+    "Eraser",
+    "Hilighter",
+    "Orangutang",
+    "Monkey",
+    "Gorilla",
+    "Meerkat",
+    "Penguin",
+    "Lizard",
+    "Horse",
+    "Puppy",
+    "Kitten",
+    "Cat",
+    "Dog",
+    "Toaster",
+    "Stove",
+    "Dishwasher",
+    "Sink",
+    "Microwave",
+    "Freezer",
+    "Washing Machine",
+    "Jukebox",
+    "Radio",
+    "Bluetooth",
+    "WiFi",
+    "Wireless Charging"
 )

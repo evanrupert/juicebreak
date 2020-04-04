@@ -23,7 +23,15 @@ val prompts: List<PromptData> = listOf(
         description = """
             Given the following matchup, explain your best two-sentence pitch of why you think your character would win! The more creative, the better!
 
-            > *Who would win: [fighter1] [power1] or [fighter2] [power2]?*
+            > *Who would win: [fighter] [power] or [fighter] [power]?*
+        """.trimIndent()
+    ),
+    PromptData(
+        title = "Three-Word Startup!",
+        description = """
+            Using the following three random words, write a two-sentence pitch about a made-up company! The crazier the idea, the better!
+
+            > *Your three words are: '[buzzword]', '[buzzword]', and '[buzzword]'*
         """.trimIndent()
     )
 )
