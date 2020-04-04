@@ -30,10 +30,10 @@ fun main() {
 
             currentChallenge = Challenge(threadId)
 
-            asyncExecuteIn(RESULT_DELAY) {
-                val results = currentChallenge?.calculateResults() ?: return@asyncExecuteIn
-                postChallengeResults(channel, results)
-            }
+//            asyncExecuteIn(RESULT_DELAY) {
+//                val results = currentChallenge?.calculateResults() ?: return@asyncExecuteIn
+//                postChallengeResults(channel, currentChallenge!!.threadId, results)
+//            }
         }
 
         // Make submission with mention
@@ -75,7 +75,7 @@ fun main() {
             currentChallenge?.printDebug()
 
             val results = currentChallenge?.calculateResults() ?: return@on
-            postChallengeResults(channel, results)
+            postChallengeResults(channel, currentChallenge!!.threadId, results)
         }
 
     }.start()
@@ -88,11 +88,12 @@ fun asyncExecuteIn(delay: Long, f: () -> Unit) {
     }
 }
 
-fun postChallengeResults(channel: String, results: Map<String, List<String>>) {
+fun postChallengeResults(channel: String, thread: ThreadId, results: Map<String, List<String>>) {
     val reactionResults = results.map(::resultToDisplayString)
     postMessage(
         channel,
-        reactionResults.joinToString("\n")
+        reactionResults.joinToString("\n"),
+        thread
     )
 }
 

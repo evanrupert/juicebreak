@@ -6,7 +6,7 @@ typealias UserId = String
 typealias Reaction = String
 typealias ReactionCount = MutableMap<String, Int>
 
-class Challenge(private val threadId: ThreadId) {
+class Challenge(val threadId: ThreadId) {
     private val submissions: MutableMap<SubmissionId, ReactionCount> = mutableMapOf()
     private val submissionUsers: MutableMap<SubmissionId, UserId> = mutableMapOf()
 
