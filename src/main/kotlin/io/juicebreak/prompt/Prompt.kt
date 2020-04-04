@@ -25,12 +25,12 @@ class Prompt {
 
     override fun toString(): String =
 """
-Hey there! JuiceBreak Here! Today’s fun challenge is: :drum_with_drumsticks: :drum_with_drumsticks: :drum_with_drumsticks:
+Hey there! Juice Break here! Today’s fun challenge is: :drum_with_drumsticks: :drum_with_drumsticks: :drum_with_drumsticks:
 
 > *$title*
 > $description
 
-To enter the challenge, please reply to this thread with *@Juice Break* and your submission!
+To enter the challenge, please reply to this thread with *'@Juice Break'* and your submission!
 
 To vote for superlatives, just react with any of the following emojis:
 
