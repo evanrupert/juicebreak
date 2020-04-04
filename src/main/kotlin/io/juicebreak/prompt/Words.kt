@@ -1,22 +1,5 @@
 package io.juicebreak.prompt
 
-import kotlin.random.Random
-
-fun randomNoun(): String =
-    nouns[Random.nextInt(0, nouns.size)]
-
-fun randomAdjective(): String =
-    adjectives[Random.nextInt(0, adjectives.size)]
-
-fun randomFighter(): String =
-    fighters[Random.nextInt(0, fighters.size)]
-
-fun randomPower(): String =
-    powers[Random.nextInt(0, powers.size)]
-
-fun randomBuzzword(): String =
-    buzzwords[Random.nextInt(0, buzzwords.size)]
-
 val nouns: List<String> = listOf(
     "squirrel",
     "bunny",
@@ -331,4 +314,31 @@ val buzzwords: List<String> = listOf(
     "Bluetooth",
     "WiFi",
     "Wireless Charging"
+)
+
+val debates: List<String> = listOf(
+    "Is a poptart a raviolli?",
+    "Is a taco a sandwich?",
+    "Would you rather fight a single horse-sized chicken or one hundred chicken-sized horses?",
+    "At what scale is a cookie really a cake?",
+    "Is a bike carrying a third wheel a tricycle?",
+    "Is transparent a color?",
+    "Does the lorax speak for other plants?",
+    "Can a bar of soap ever get dirty?",
+    "Is water wet?",
+    "Is a calzone a pastry?",
+    "Is spaghetti a salad?",
+    "If a naughty child asks Santa for coal, will they get it?"
+)
+
+val events: List<String> = listOf(
+    "You suddenly have the power to convert coal into spagetthi.",
+    "You can suddenly tell how much something weighs by licking it.",
+    "The sky has turned yellow except for one square meter directly above your house.",
+    "All fish in North America has been converted into Sweedish Fish.",
+    "You suddenly know every time someone in your immediate vicinity has said the word \"Pineapple\".",
+    "You can make someone unallergic to something at the cost of their being extremely allergic to their favorite food.",
+    "You are suddenly able to control one cubic centimeter of gas with your mind.",
+    "Antartica has suddenly moved to the center of the Pacific ocean.",
+    "You find yourself in possession of all typewriters in England."
 )

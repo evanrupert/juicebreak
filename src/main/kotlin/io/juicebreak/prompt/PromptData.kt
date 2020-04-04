@@ -33,5 +33,21 @@ val prompts: List<PromptData> = listOf(
 
             > *Your three words are: '[buzzword]', '[buzzword]', and '[buzzword]'*
         """.trimIndent()
+    ),
+    PromptData(
+        title = "Dumb Debates!",
+        description = """
+            Given the following debate topic, explain your reasoning for the side you choose!
+
+            > *[debate]*
+        """.trimIndent()
+    ),
+    PromptData(
+        title = "Creative Capitalism!",
+        description = """
+            Given the following crazy situation, write a two-sentence response about how you would make super profits! The crazier the idea, the better!
+
+            > *[event]*
+        """.trimIndent()
     )
 )

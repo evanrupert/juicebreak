@@ -15,11 +15,13 @@ class Prompt {
 
     private fun replaceTemplate(str: String): String =
         str
-            .replace(Regex("\\[noun\\]")) { randomNoun() }
-            .replace(Regex("\\[adjective\\]")) { randomAdjective() }
-            .replace(Regex("\\[fighter\\]")) { randomFighter() }
-            .replace(Regex("\\[power\\]")) { randomPower() }
-            .replace(Regex("\\[buzzword\\]")) { randomBuzzword() }
+            .replace(Regex("\\[noun\\]")) { nouns.random() }
+            .replace(Regex("\\[adjective\\]")) { adjectives.random() }
+            .replace(Regex("\\[fighter\\]")) { fighters.random() }
+            .replace(Regex("\\[power\\]")) { powers.random() }
+            .replace(Regex("\\[buzzword\\]")) { buzzwords.random() }
+            .replace(Regex("\\[debate\\]")) { debates.random() }
+            .replace(Regex("\\[event\\]")) { events.random() }
 
     override fun toString(): String =
 """

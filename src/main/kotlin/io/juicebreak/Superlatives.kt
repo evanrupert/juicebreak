@@ -1,10 +1,10 @@
 package io.juicebreak
 
 val superlatives = mapOf(
-    "heart" to "Fan favorite",
-    "+1" to "Most liked",
-    "slightly_smiling_face" to "Funniest",
-    "heavy_check_mark" to "Most accurate",
-    "eyes" to "Most sunrising"
+    "heart" to "Most Heartwarming",
+    "+1" to "Fan Favorite",
+    "slightly_smiling_face" to "Most Hilarious",
+    "heavy_check_mark" to "Most Relatable",
+    "eyes" to "Most Unexpected"
 )
 
