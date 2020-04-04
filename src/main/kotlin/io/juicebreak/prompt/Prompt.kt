@@ -13,11 +13,14 @@ class Prompt {
         description = replaceTemplate(data.description)
     }
 
-    private fun replaceTemplate(str: String): String {
-        return str.replace("[noun]", randomNoun()).replace("[adjective]",
-            randomAdjective()
-        )
-    }
+    private fun replaceTemplate(str: String): String =
+        str
+            .replace("[noun]", randomNoun())
+            .replace("[adjective]", randomAdjective())
+            .replace("[fighter1]", randomFighter())
+            .replace("[fighter2]", randomFighter())
+            .replace("[power1]", randomPower())
+            .replace("[power2]", randomPower())
 
     override fun toString(): String =
 """
