@@ -70,12 +70,18 @@ fun main() {
             currentChallenge?.removeVote(submissionId, reaction)
         }
 
+        // Post results message to thread
+        on("/winners") { _, channel ->
+            currentChallenge?.let { postChallengeResults(channel, it) }
+        }
+
         // Print data and force result message
         on("/debug") { _, channel ->
-            currentChallenge?.printDebug()
+            currentChallenge?.let {
+                it.printDebug()
 
-            val results = currentChallenge?.calculateResults() ?: return@on
-            postChallengeResults(channel, currentChallenge!!.threadId, results)
+                postChallengeResults(channel, it)
+            }
         }
 
     }.start()
@@ -88,12 +94,19 @@ fun asyncExecuteIn(delay: Long, f: () -> Unit) {
     }
 }
 
-fun postChallengeResults(channel: String, thread: ThreadId, results: Map<String, List<String>>) {
-    val reactionResults = results.map(::resultToDisplayString)
+fun postChallengeResults(channel: String, challenge: Challenge) {
+    val results = challenge.calculateResults()
+
+    val resultsText =
+        if (results.isEmpty())
+            "No submissions :cry:"
+        else
+            results.map(::resultToDisplayString).joinToString("\n")
+
     postMessage(
         channel,
-        reactionResults.joinToString("\n"),
-        thread
+        resultsText,
+        challenge.threadId
     )
 }
 

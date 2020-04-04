@@ -63,6 +63,7 @@ class SlackApp {
         val text = params["text"]!!
         val channel = params["channel_id"]!!
 
+        println("Received command of type: '$commandType'")
         commandListeners[commandType]?.invoke(text, channel)
 
         call.respond(HttpStatusCode.OK)
