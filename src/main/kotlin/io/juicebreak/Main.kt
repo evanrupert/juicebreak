@@ -1,5 +1,6 @@
 package io.juicebreak
 
+import io.juicebreak.prompt.Prompt
 import io.juicebreak.slack.receiving.Event
 import io.juicebreak.slack.receiving.SlackApp
 import io.juicebreak.slack.sending.postMessage
@@ -7,25 +8,20 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-val superlatives = mapOf(
-    "heart" to "Fan favorite",
-    "+1" to "Most liked",
-    "slightly_smiling_face" to "Funniest",
-    "heavy_check_mark" to "Most accurate",
-    "eyes" to "Most sunrising"
-)
-
 const val RESULT_DELAY = 18_000_000L
 
 // TODO: Figure out how to do async state
 fun main() {
     var currentChallenge: Challenge? = null
+    var currentPrompt: Prompt
 
     SlackApp().apply {
 
         // Start new challenge
         on("/challenge") { _, channel ->
-            val resp = postMessage(channel, "Write a joke, you have $RESULT_DELAY milliseconds")
+            currentPrompt = Prompt()
+
+            val resp = postMessage(channel, currentPrompt.toString())
             val threadId = resp["message"]["ts"].asText()
 
             currentChallenge = Challenge(threadId)

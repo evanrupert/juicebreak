@@ -49,7 +49,6 @@ class SlackApp {
 
         if (!isBot(json)) {
             println("Received dispatch of type: '${event.type}'")
-            println(json)
             eventListeners[event]?.invoke(json["event"])
         }
 
