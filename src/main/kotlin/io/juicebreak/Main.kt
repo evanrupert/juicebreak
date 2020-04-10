@@ -4,14 +4,12 @@ import io.juicebreak.prompt.Prompt
 import io.juicebreak.slack.receiving.Event
 import io.juicebreak.slack.receiving.SlackApp
 import io.juicebreak.slack.sending.postMessage
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
-const val RESULT_DELAY = 18_000_000L
-
-// TODO: Figure out how to do async state
 fun main() {
+    start()
+}
+
+fun start() {
     var currentChallenge: Challenge? = null
     var currentPrompt: Prompt
 
@@ -25,11 +23,6 @@ fun main() {
             val threadId = resp["message"]["ts"].asText()
 
             currentChallenge = Challenge(threadId)
-
-//            asyncExecuteIn(RESULT_DELAY) {
-//                val results = currentChallenge?.calculateResults() ?: return@asyncExecuteIn
-//                postChallengeResults(channel, currentChallenge!!.threadId, results)
-//            }
         }
 
         // Make submission with mention
@@ -81,13 +74,7 @@ fun main() {
         }
 
     }.start()
-}
 
-fun asyncExecuteIn(delay: Long, f: () -> Unit) {
-    GlobalScope.launch {
-        delay(delay)
-        f()
-    }
 }
 
 fun postChallengeResults(channel: String, challenge: Challenge) {

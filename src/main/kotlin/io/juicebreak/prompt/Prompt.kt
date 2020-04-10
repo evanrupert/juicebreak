@@ -1,27 +1,19 @@
 package io.juicebreak.prompt
 
 import io.juicebreak.superlatives
-import kotlin.random.Random;
 
 class Prompt {
     private val title: String
     private val description: String
 
     init {
-        val data = prompts[Random.nextInt(0, prompts.size)]
-        title = data.title
-        description = replaceTemplate(data.description)
+        val (title, description) = prompts.random()
+        this.title = title
+        this.description = replaceWithRandomWords(description)
     }
 
-    private fun replaceTemplate(str: String): String =
-        str
-            .replace(Regex("\\[noun\\]")) { nouns.random() }
-            .replace(Regex("\\[adjective\\]")) { adjectives.random() }
-            .replace(Regex("\\[fighter\\]")) { fighters.random() }
-            .replace(Regex("\\[power\\]")) { powers.random() }
-            .replace(Regex("\\[buzzword\\]")) { buzzwords.random() }
-            .replace(Regex("\\[debate\\]")) { debates.random() }
-            .replace(Regex("\\[event\\]")) { events.random() }
+    private fun replaceWithRandomWords(str: String): String =
+        str.replace(Regex("\\[([^\\]]*)\\]")) { words[it.groupValues[1]]?.random() ?: "" }
 
     override fun toString(): String =
 """

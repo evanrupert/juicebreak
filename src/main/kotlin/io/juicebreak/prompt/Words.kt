@@ -342,3 +342,13 @@ val events: List<String> = listOf(
     "Antartica has suddenly moved to the center of the Pacific ocean.",
     "You find yourself in possession of all typewriters in England."
 )
+
+val words: Map<String, List<String>> = mapOf(
+    "noun" to nouns,
+    "adjective" to adjectives,
+    "fighter" to fighters,
+    "power" to powers,
+    "buzzword" to buzzwords,
+    "debate" to debates,
+    "event" to events
+)

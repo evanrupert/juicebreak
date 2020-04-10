@@ -48,7 +48,7 @@ class SlackApp {
         val event = parseEventType(json)
 
         if (!isBot(json)) {
-            println("Received dispatch of type: '${event.type}'")
+            println("Received event of type: '${event.type}'")
             eventListeners[event]?.invoke(json["event"])
         }
 
